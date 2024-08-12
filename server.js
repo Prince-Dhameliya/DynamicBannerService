@@ -44,9 +44,6 @@ app.use(express.json());
 //middleware for cookies
 app.use(cookieParser());
 
-//serve static files
-app.use('/', express.static(path.join(__dirname, '/public')));
-
 // routes
 // app.use('/api/register', require('./routes/registerRoute.js'));
 app.use('/api', require('./utils/Route'));
