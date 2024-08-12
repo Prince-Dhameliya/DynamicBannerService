@@ -1,4 +1,5 @@
 const { Sequelize } = require('sequelize');
+const mysql = require('mysql2');
 
 // Initialize Sequelize with MySQL connection
 const sequelize = new Sequelize(process.env.DATABASE_URI,
