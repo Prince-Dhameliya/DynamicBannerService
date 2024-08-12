@@ -1,10 +1,10 @@
 const Banner = require("../models/banner");
 
 const getBanners = async (req, res) => {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader) return res.status(401).send('Access Denied');
-    const isAdmin = authHeader.split(' ')[1];
     try {
+        const authHeader = req.headers['authorization'];
+        if (!authHeader) return res.status(401).send('Access Denied');
+        const isAdmin = authHeader.split(' ')[1];
         const banners = await Banner.findAll();
         if (!banners) return res.status(404).json({ message: 'Banner not found' });
         
