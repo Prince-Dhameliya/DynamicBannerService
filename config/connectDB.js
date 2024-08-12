@@ -16,7 +16,16 @@ const sequelize = new Sequelize(
   process.env.DATABASE_PASSWORD,
   {
     host: process.env.DATABASE_HOST,
-    dialect: 'mysql', // Use 'mysql2' dialect, handled by Sequelize
+    dialect: 'mysql', // Use 'mysql2' dialect, handled by Sequelize,
+    dialectOptions: {
+      connectTimeout: 30000 // 30 seconds timeout
+    },
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
   }
 );
 
