@@ -5,15 +5,17 @@ const getBanners = async (req, res) => {
         const banners = await Banner.findAll();
         if (!banners) return res.status(404).json({ message: 'Banner not found' });
         
-        const newBanners = banners.map((banner) => {
+        const newBanners = banners.map((bnr) => {
+            const { dataValues: banner } = bnr;
             const currentTime = new Date();
             const remainingTime = Math.max(0, new Date(banner.endTime) - currentTime);
             return {
-                ...banner.dataValues,
+                ...banner,
                 remainingTime,
                 isVisible: banner.isVisible && remainingTime > 0,
             };
-        });
+        })
+        .filter((banner) => banner.isVisible);
     
         res.status(200).json(newBanners);
     } catch (err) {
@@ -24,14 +26,16 @@ const getBanners = async (req, res) => {
 const getBanner = async (req, res) => {
     const { id } = req.params;
     try {
-        const banner = await Banner.findOne({ where: { id } });
-        if (!banner) return res.status(404).json({ message: 'Banner not found' });
+        const bnr = await Banner.findOne({ where: { id } });
+        if (!bnr) return res.status(404).json({ message: 'Banner not found' });
+
+        const { dataValues: banner } = bnr;
     
         const currentTime = new Date();
         const remainingTime = Math.max(0, new Date(banner.endTime) - currentTime);
     
         res.json({
-            ...banner.dataValues,
+            ...banner,
           remainingTime: remainingTime, // Time in milliseconds
           isVisible: banner.isVisible && remainingTime > 0,
         });
