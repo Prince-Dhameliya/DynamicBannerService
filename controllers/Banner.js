@@ -4,7 +4,8 @@ const getBanners = async (req, res) => {
     try {
         const authHeader = req.headers['authorization'];
         if (!authHeader) return res.status(401).send('Access Denied');
-        const isAdmin = authHeader.split(' ')[1];
+        const isAdmin = authHeader.split(' ')[1] === 'true';
+        
         const banners = await Banner.findAll();
         if (!banners) return res.status(404).json({ message: 'Banner not found' });
         
@@ -18,7 +19,7 @@ const getBanners = async (req, res) => {
                 isVisible: banner.isVisible && remainingTime > 0,
             };
         })
-        .filter((banner) => (Boolean(isAdmin) || banner.isVisible));
+        .filter((banner) => (isAdmin || banner.isVisible));
     
         res.status(200).json(newBanners);
     } catch (err) {
