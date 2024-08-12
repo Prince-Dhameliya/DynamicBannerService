@@ -3,10 +3,7 @@ const Banner = require("../models/banner");
 const getBanners = async (req, res) => {
     const authHeader = req.headers['authorization'];
     if (!authHeader) return res.status(401).send('Access Denied');
-    const token = authHeader.split(' ')[1];
-    if (!token) return res.status(401).send('Access Denied');
-    const verified = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const isAdmin = verified.isAdmin;
+    const isAdmin = authHeader.split(' ')[1];
     try {
         const banners = await Banner.findAll();
         if (!banners) return res.status(404).json({ message: 'Banner not found' });
@@ -21,7 +18,7 @@ const getBanners = async (req, res) => {
                 isVisible: banner.isVisible && remainingTime > 0,
             };
         })
-        .filter((banner) => (isAdmin || banner.isVisible));
+        .filter((banner) => (Boolean(isAdmin) || banner.isVisible));
     
         res.status(200).json(newBanners);
     } catch (err) {
