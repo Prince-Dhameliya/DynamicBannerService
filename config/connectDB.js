@@ -16,7 +16,7 @@ const sequelize = new Sequelize(
   process.env.DATABASE_PASSWORD,
   {
     host: process.env.DATABASE_HOST,
-    dialect: 'mysql', // Use 'mysql2' dialect, handled by Sequelize
+    dialect: 'mysql2', // Use 'mysql2' dialect, handled by Sequelize
   }
 );
 
