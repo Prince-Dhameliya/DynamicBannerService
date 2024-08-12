@@ -58,3 +58,5 @@ app.all('*', (req, res) => {
         res.type('txt').send("404 Not Found");
     }
 });
+
+module.exports = app;
